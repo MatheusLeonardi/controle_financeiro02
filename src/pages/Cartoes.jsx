@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import EmptyState from '../components/EmptyState';
+import MoneyInput from '../components/MoneyInput';
 import PageHeader from '../components/PageHeader';
 import { formatCurrency } from '../lib/finance';
 
@@ -61,12 +62,9 @@ export default function Cartoes({ data, actions }) {
           </label>
           <label>
             Limite
-            <input
-              type="number"
-              min="0"
-              step="0.01"
+            <MoneyInput
               value={form.limite}
-              onChange={(event) => update('limite', event.target.value)}
+              onChange={(value) => update('limite', value)}
               required
             />
           </label>

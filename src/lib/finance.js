@@ -10,7 +10,30 @@ export const formatCurrency = (value) => currencyFormatter.format(Number(value |
 export const numberFromInput = (value) => {
   if (typeof value === 'number') return value;
   if (!value) return 0;
-  return Number(String(value).replace(/\./g, '').replace(',', '.')) || 0;
+
+  const cleanValue = String(value).trim().replace(/[^\d,.-]/g, '');
+  const lastComma = cleanValue.lastIndexOf(',');
+  const lastDot = cleanValue.lastIndexOf('.');
+  const decimalSeparator =
+    lastComma >= 0 && lastDot >= 0
+      ? lastComma > lastDot
+        ? ','
+        : '.'
+      : lastComma >= 0
+        ? ','
+        : lastDot >= 0
+          ? '.'
+          : '';
+
+  if (!decimalSeparator) {
+    return Number(cleanValue.replace(/[^\d-]/g, '')) || 0;
+  }
+
+  const separatorIndex = cleanValue.lastIndexOf(decimalSeparator);
+  const integerPart = cleanValue.slice(0, separatorIndex).replace(/[^\d-]/g, '');
+  const decimalPart = cleanValue.slice(separatorIndex + 1).replace(/\D/g, '');
+
+  return Number(`${integerPart || 0}.${decimalPart}`) || 0;
 };
 
 export const todayIso = () => new Date().toISOString().slice(0, 10);

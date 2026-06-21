@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import EmptyState from '../components/EmptyState';
+import MoneyInput from '../components/MoneyInput';
 import PageHeader from '../components/PageHeader';
 import { CATEGORIES, PERSONS, PURCHASE_STATUS } from '../lib/constants';
 import { formatCurrency, purchaseSummaries, todayIso } from '../lib/finance';
@@ -76,12 +77,9 @@ export default function ComprasParceladas({ data, actions }) {
           </label>
           <label>
             Valor total
-            <input
-              type="number"
-              min="0"
-              step="0.01"
+            <MoneyInput
               value={form.valor_total}
-              onChange={(event) => update('valor_total', event.target.value)}
+              onChange={(value) => update('valor_total', value)}
               required
             />
           </label>

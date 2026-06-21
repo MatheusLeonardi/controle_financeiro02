@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import EmptyState from '../components/EmptyState';
 import Filters from '../components/Filters';
+import MoneyInput from '../components/MoneyInput';
 import PageHeader from '../components/PageHeader';
 import { CATEGORIES, PAYMENT_METHODS, PERSONS, PURCHASE_STATUS } from '../lib/constants';
 import { formatCurrency, todayIso } from '../lib/finance';
@@ -121,12 +122,9 @@ export default function Gastos({ data, actions }) {
           </label>
           <label>
             {form.tipo_cartao === 'parcelado' ? 'Valor total' : 'Valor'}
-            <input
-              type="number"
-              min="0"
-              step="0.01"
+            <MoneyInput
               value={form.valor}
-              onChange={(event) => update('valor', event.target.value)}
+              onChange={(value) => update('valor', value)}
               required
             />
           </label>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import EmptyState from '../components/EmptyState';
+import MoneyInput from '../components/MoneyInput';
 import PageHeader from '../components/PageHeader';
 import { dashboardSummary, formatCurrency, monthLabel } from '../lib/finance';
 
@@ -72,12 +73,9 @@ export default function Metas({ data, actions }) {
           </label>
           <label>
             Valor máximo permitido
-            <input
-              type="number"
-              min="0"
-              step="0.01"
+            <MoneyInput
               value={form.valor_meta}
-              onChange={(event) => update('valor_meta', event.target.value)}
+              onChange={(value) => update('valor_meta', value)}
               required
             />
           </label>

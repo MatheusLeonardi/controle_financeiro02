@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import EmptyState from '../components/EmptyState';
+import MoneyInput from '../components/MoneyInput';
 import PageHeader from '../components/PageHeader';
 import { formatCurrency, monthLabel } from '../lib/finance';
 
@@ -51,12 +52,9 @@ export default function Rendas({ data, actions }) {
         <form className="form-grid" onSubmit={submit}>
           <label>
             Valor
-            <input
-              type="number"
-              min="0"
-              step="0.01"
+            <MoneyInput
               value={form.valor}
-              onChange={(event) => update('valor', event.target.value)}
+              onChange={(value) => update('valor', value)}
               required
             />
           </label>
