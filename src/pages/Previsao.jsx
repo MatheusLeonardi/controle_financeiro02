@@ -9,6 +9,9 @@ export default function Previsao({ data }) {
   const [start, setStart] = useState(currentMonthYear());
   const forecast = useMemo(() => forecastMonths(data, start.mes, start.ano, 12), [data, start]);
   const grandTotal = forecast.reduce((total, month) => total + month.totalGeral, 0);
+  const totalRenda = forecast.reduce((total, month) => total + month.rendaMes, 0);
+  const totalGastoEu = forecast.reduce((total, month) => total + month.gastoEu, 0);
+  const saldoEuPeriodo = totalRenda - totalGastoEu;
 
   return (
     <>
@@ -20,6 +23,14 @@ export default function Previsao({ data }) {
 
       <section className="kpi-grid">
         <KpiCard title="Total previsto" value={formatCurrency(grandTotal)} description="Próximos 12 meses" />
+        <KpiCard title="Renda prevista" value={formatCurrency(totalRenda)} description="Rendas cadastradas" />
+        <KpiCard title="Gasto Eu" value={formatCurrency(totalGastoEu)} description="Faturas no seu nome" />
+        <KpiCard
+          title="Saldo Eu"
+          value={formatCurrency(saldoEuPeriodo)}
+          description={saldoEuPeriodo >= 0 ? 'Vai sobrar no período' : 'Vai faltar no período'}
+          tone={saldoEuPeriodo >= 0 ? 'positive' : 'negative'}
+        />
         {PERSONS.map((person) => (
           <KpiCard
             key={person}
@@ -44,6 +55,18 @@ export default function Previsao({ data }) {
               <div>
                 <span>Parcelas futuras</span>
                 <strong>{formatCurrency(month.totalParcelas)}</strong>
+              </div>
+              <div>
+                <span>Renda do mês</span>
+                <strong>{formatCurrency(month.rendaMes)}</strong>
+              </div>
+              <div>
+                <span>Gasto Eu</span>
+                <strong>{formatCurrency(month.gastoEu)}</strong>
+              </div>
+              <div className={`forecast-result ${month.saldoEu >= 0 ? 'positive' : 'negative'}`}>
+                <span>{month.saldoEu >= 0 ? 'Vai sobrar (renda - gasto Eu)' : 'Vai faltar (renda - gasto Eu)'}</span>
+                <strong>{formatCurrency(Math.abs(month.saldoEu))}</strong>
               </div>
               {PERSONS.map((person) => (
                 <div key={person}>

@@ -356,13 +356,19 @@ export const forecastMonths = (data, startMes, startAno, count = 12) =>
     const period = addMonths(startMes, startAno, index);
     const entries = billEntries(data, { mes: period.mes, ano: period.ano });
     const installmentItems = entries.filter((entry) => entry.type === 'parcelado');
+    const byPerson = totalsByPerson(entries);
+    const rendaMes = monthlyIncome(data.rendas, period.mes, period.ano);
+    const gastoEu = byPerson.Eu || 0;
 
     return {
       ...period,
       label: monthLabel(period.mes, period.ano),
       totalFatura: sum(entries),
       totalParcelas: sum(installmentItems),
-      byPerson: totalsByPerson(entries),
+      byPerson,
+      rendaMes,
+      gastoEu,
+      saldoEu: rendaMes - gastoEu,
       totalGeral: sum(entries),
     };
   });

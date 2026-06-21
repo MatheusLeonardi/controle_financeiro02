@@ -633,6 +633,26 @@ button.status-pill {
   padding-bottom: 0;
 }
 
+.forecast-lines .forecast-result {
+  border-radius: 8px;
+  border-bottom: 0;
+  padding: 10px 12px;
+}
+
+.forecast-result.positive {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.forecast-result.negative {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.forecast-result span {
+  color: inherit;
+}
+
 .mini-progress {
   max-width: 150px;
 }
