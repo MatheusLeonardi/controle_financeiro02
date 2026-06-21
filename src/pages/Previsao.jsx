@@ -60,12 +60,8 @@ export default function Previsao({ data }) {
                 <span>Renda do mês</span>
                 <strong>{formatCurrency(month.rendaMes)}</strong>
               </div>
-              <div>
-                <span>Gasto Eu</span>
-                <strong>{formatCurrency(month.gastoEu)}</strong>
-              </div>
               <div className={`forecast-result ${month.saldoEu >= 0 ? 'positive' : 'negative'}`}>
-                <span>{month.saldoEu >= 0 ? 'Vai sobrar (renda - gasto Eu)' : 'Vai faltar (renda - gasto Eu)'}</span>
+                <span>{month.saldoEu >= 0 ? 'Vai sobrar' : 'Vai faltar'}</span>
                 <strong>{formatCurrency(Math.abs(month.saldoEu))}</strong>
               </div>
               {PERSONS.map((person) => (
