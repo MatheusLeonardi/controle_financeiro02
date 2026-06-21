@@ -15,6 +15,11 @@ import {
   totalsByPerson,
 } from '../lib/finance';
 
+const personOrder = PERSONS.reduce((acc, person, index) => {
+  acc[person] = index;
+  return acc;
+}, {});
+
 export default function Fatura({ data, period, setPeriod, actions }) {
   const [cardId, setCardId] = useState('');
   const [updating, setUpdating] = useState('');
@@ -22,7 +27,19 @@ export default function Fatura({ data, period, setPeriod, actions }) {
 
   const selectedCard = getCard(data.cartoes, cardId);
   const entries = useMemo(
-    () => billEntries(data, { mes: period.mes, ano: period.ano, cartao_id: cardId }),
+    () =>
+      billEntries(data, { mes: period.mes, ano: period.ano, cartao_id: cardId }).sort((a, b) => {
+        const personDiff =
+          (personOrder[a.pessoa_responsavel] ?? PERSONS.length) -
+          (personOrder[b.pessoa_responsavel] ?? PERSONS.length);
+
+        if (personDiff !== 0) return personDiff;
+
+        const dateDiff = String(a.data_compra).localeCompare(String(b.data_compra));
+        if (dateDiff !== 0) return dateDiff;
+
+        return String(a.descricao).localeCompare(String(b.descricao));
+      }),
     [cardId, data, period.ano, period.mes],
   );
   const byPerson = totalsByPerson(entries);
